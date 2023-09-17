@@ -1,4 +1,4 @@
-const socket = io('https://syncplay.aaroncurt.is:4000')
+const socket = io('http://localhost:3000')
 const messageContainer = document.getElementById('message-container')
 const messageForm = document.getElementById('send-container')
 const messageInput = document.getElementById('message-input')
@@ -10,10 +10,17 @@ socket.emit('new-user', name)
 function audioTimeUpdateHandler(evt){
   console.log(evt)
   console.log(`broadcasting ${evt.target.currentTime}`)
-  socket.emit('send-audio-time-2svr',evt.target.currentTime)
+  socket.emit('send-audio-time-2svr',
+      {
+        time: evt.target.currentTime,
+        paused: evt.target.paused
+      }
+  )
 }
 
 player.addEventListener("timeupdate", audioTimeUpdateHandler)
+// player.addEventListener("pause", audioTimeUpdateHandler)
+// player.addEventListener("play", audioTimeUpdateHandler)
 socket.on('chat-message', data => {
   appendMessage(`${data.name}: ${data.message}`)
 })
@@ -21,8 +28,16 @@ socket.on('chat-message', data => {
 socket.on('broadcast-audio-time', data =>{
   if (data.name != name){
     player.removeEventListener('timeupdate', audioTimeUpdateHandler)
-    player.currentTime = data.message
-    console.log(`setting my time to ${data.message}`)
+    player.currentTime = data.message.time
+    if (data.message.paused != player.paused){
+      if (data.message.paused){
+        player.pause()
+      }
+      if (!data.message.paused){
+        player.play()
+      }
+    }
+    console.log(`setting my time to ${data.message.time}`)
     setTimeout(()=>{player.addEventListener("timeupdate", audioTimeUpdateHandler)}, 100)
   }
 })

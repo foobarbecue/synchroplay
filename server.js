@@ -12,7 +12,7 @@ io.on('connection', socket => {
   })
   socket.on('send-audio-time-2svr', message => {
     socket.broadcast.emit('broadcast-audio-time', { message: message, name: users[socket.id] })
-    console.log(`${users[socket.id]} is setting time to ${message}`)
+    console.log(`${users[socket.id]} is setting time to ${message.time}`)
   })
   socket.on('disconnect', () => {
     socket.broadcast.emit('user-disconnected', users[socket.id])
