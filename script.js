@@ -3,8 +3,8 @@ const messageContainer = document.getElementById('message-container')
 const messageForm = document.getElementById('send-container')
 const messageInput = document.getElementById('message-input')
 const player = document.querySelector("audio")
-const name = prompt('What is your name?')
-appendMessage('You joined')
+const name = Math.floor(Math.random() * Date.now()).toString(36);
+appendMessage(`Welcome to this syncplay room! I'm going to call you ${name}.`)
 socket.emit('new-user', name)
 
 function audioTimeUpdateHandler(evt){
@@ -55,11 +55,11 @@ socket.on('broadcast-audio-time', data =>{
 })
 
 socket.on('user-connected', name => {
-  appendMessage(`${name} connected`)
+  appendMessage(`User ${name} connected`)
 })
 
 socket.on('user-disconnected', name => {
-  appendMessage(`${name} disconnected`)
+  appendMessage(`User ${name} disconnected`)
 })
 
 messageForm.addEventListener('submit', e => {
