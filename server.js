@@ -14,6 +14,9 @@ io.on('connection', socket => {
     socket.broadcast.emit('broadcast-audio-time', { message: message, name: users[socket.id] })
     console.log(`${users[socket.id]} is setting time to ${message.time}`)
   })
+  socket.on('send-pausestate-2svr', message =>{
+    socket.broadcast.emit('broadcast-pause-state', { message: message, name: users[socket.id] })
+  })
   socket.on('disconnect', () => {
     socket.broadcast.emit('user-disconnected', users[socket.id])
     delete users[socket.id]

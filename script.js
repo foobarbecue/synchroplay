@@ -8,8 +8,6 @@ appendMessage('You joined')
 socket.emit('new-user', name)
 
 function audioTimeUpdateHandler(evt){
-  console.log(evt)
-  console.log(`broadcasting ${evt.target.currentTime}`)
   socket.emit('send-audio-time-2svr',
       {
         time: evt.target.currentTime,
@@ -18,27 +16,41 @@ function audioTimeUpdateHandler(evt){
   )
 }
 
+function pausedUpdateHandler(evt){
+  socket.emit('send-pausestate-2svr', evt.target.paused)
+}
+
 player.addEventListener("timeupdate", audioTimeUpdateHandler)
-// player.addEventListener("pause", audioTimeUpdateHandler)
-// player.addEventListener("play", audioTimeUpdateHandler)
+player.addEventListener("pause", pausedUpdateHandler)
+player.addEventListener("play", pausedUpdateHandler)
 socket.on('chat-message', data => {
   appendMessage(`${data.name}: ${data.message}`)
 })
 
-socket.on('broadcast-audio-time', data =>{
+socket.on('broadcast-pause-state', data =>{
+
   if (data.name != name){
-    player.removeEventListener('timeupdate', audioTimeUpdateHandler)
-    player.currentTime = data.message.time
-    if (data.message.paused != player.paused){
-      if (data.message.paused){
-        player.pause()
-      }
-      if (!data.message.paused){
-        player.play()
-      }
+    if (data.message && !player.paused) {
+      console.log('pausing')
+      player.removeEventListener("pause", pausedUpdateHandler)
+      player.pause()
+      player.addEventListener("pause", pausedUpdateHandler)
     }
-    console.log(`setting my time to ${data.message.time}`)
-    setTimeout(()=>{player.addEventListener("timeupdate", audioTimeUpdateHandler)}, 100)
+    if (!data.message && player.paused) {
+      console.log('playing')
+      player.removeEventListener("play", pausedUpdateHandler)
+      player.play()
+      player.addEventListener("play", pausedUpdateHandler)
+    }
+  }
+})
+
+socket.on('broadcast-audio-time', data =>{
+  if (data.name != name && (Math.abs(player.currentTime - data.message.time) > 1)){
+      player.removeEventListener('timeupdate', audioTimeUpdateHandler)
+      player.currentTime = data.message.time
+      console.log(`setting my time to ${data.message.time}`)
+      player.addEventListener("timeupdate", audioTimeUpdateHandler)
   }
 })
 
