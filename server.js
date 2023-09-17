@@ -10,6 +10,10 @@ io.on('connection', socket => {
   socket.on('send-chat-message', message => {
     socket.broadcast.emit('chat-message', { message: message, name: users[socket.id] })
   })
+  socket.on('send-audio-time-2svr', message => {
+    socket.broadcast.emit('broadcast-audio-time', { message: message, name: users[socket.id] })
+    console.log(`${users[socket.id]} is setting time to ${message}`)
+  })
   socket.on('disconnect', () => {
     socket.broadcast.emit('user-disconnected', users[socket.id])
     delete users[socket.id]
