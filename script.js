@@ -8,7 +8,7 @@ appendMessage('You joined')
 socket.emit('new-user', name)
 
 function audioTimeUpdateHandler(evt){
-  socket.emit('send-audio-time-2svr',
+  socket.emit('send-audio-time',
       {
         time: evt.target.currentTime,
         paused: evt.target.paused
@@ -17,7 +17,7 @@ function audioTimeUpdateHandler(evt){
 }
 
 function pausedUpdateHandler(evt){
-  socket.emit('send-pausestate-2svr', evt.target.paused)
+  socket.emit('send-pausestate', evt.target.paused)
 }
 
 player.addEventListener("timeupdate", audioTimeUpdateHandler)
