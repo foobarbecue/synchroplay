@@ -14,6 +14,10 @@ io.on('connection', socket => {
     socket.broadcast.emit('broadcast-audio-time', { message: message, name: users[socket.id] })
     console.log(`${users[socket.id]} is setting time to ${message.time}`)
   })
+  socket.on('send-player-url', message => {
+    socket.broadcast.emit('broadcast-player-url', { message: message, name: users[socket.id] })
+    console.log(`${users[socket.id]} set player url to ${message}`)
+  })
   socket.on('send-pausestate', message =>{
     socket.broadcast.emit('broadcast-pause-state', { message: message, name: users[socket.id] })
   })
