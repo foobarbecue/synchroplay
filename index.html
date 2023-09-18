@@ -7,63 +7,24 @@
   <title>Syncplay Jukebox</title>
   <script defer src="http://localhost:3000/socket.io/socket.io.js"></script>
   <script defer src="script.js"></script>
-  <style>
-    #chat {
-      padding: 0;
-      margin: 0;
-      display: flex;
-      justify-content: center;
-    }
-
-    #message-container {
-      width: 80%;
-      max-width: 1200px;
-    }
-
-    #message-container div {
-      background-color: #CCC;
-      padding: 5px;
-    }
-
-    #message-container div:nth-child(2n) {
-      background-color: #FFF;
-    }
-
-    #send-container {
-      position: fixed;
-      padding-bottom: 30px;
-      bottom: 0;
-      background-color: white;
-      max-width: 1200px;
-      width: 80%;
-      display: flex;
-    }
-
-    #message-input {
-      flex-grow: 1;
-    }
-
-    #player {
-      display: flex;
-      justify-content: center;
-    }
-    #player audio{
-      width: 100%
-    }
-  </style>
+  <link rel="stylesheet" href="index.css">
 </head>
 <body>
 <div id="player">
-  <audio controls src="media/NPR3594228427.mp3"></audio>
+  <form id="mp3-url-form">
+    <input type="text" id="mp3-url-input" placeholder="Enter the URL to play here">
+    <button type="submit" id="set-mp3-url">Load</button>
+  </form>
+  <audio controls src="https://play.podtrac.com/npr-344098539/traffic.megaphone.fm/NPR3594228427.mp3"></audio>
 </div>
 
 <div id="chat">
-
   <div id="message-container"></div>
   <form id="send-container">
-    <input type="text" id="message-input">
+    <input type="text" id="message-input" placeholder="Type a chat message here">
     <button type="submit" id="send-button">Send</button>
   </form>
 </div>
+
 </body>
 </html>

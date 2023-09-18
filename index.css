@@ -1,0 +1,48 @@
+#chat, #player {
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+}
+
+#message-container, #mp3-url-form, #player audio {
+    width: 80%;
+    max-width: 1200px;
+}
+
+#message-container div {
+    background-color: #CCC;
+    padding: 5px;
+}
+
+#message-container div:nth-child(2n) {
+    background-color: #FFF;
+}
+
+#send-container {
+    position: fixed;
+    padding-bottom: 30px;
+    bottom: 0;
+    background-color: white;
+    max-width: 1200px;
+    width: 80%;
+    display: flex;
+}
+
+#mp3-url-form {
+    background-color: white;
+    max-width: 1200px;
+    width: 80%;
+    display: flex;
+}
+
+#message-input, #mp3-url-input {
+    flex-grow: 1;
+}
+
+#player {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
